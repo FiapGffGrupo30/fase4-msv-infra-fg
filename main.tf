@@ -46,8 +46,8 @@ module "load_balance" {
 
 module "ecs_fargate" {
   source            = "./modules/ecs_fg"
-  subnets           = module.new-vpc.private_subnet_ids       #ID's das suas subnets PRIVADAS
-  security_group_id = module.security-group.security_group_id #ID do security group - não esquecer
+  subnets           = module.new-vpc.private_subnet_ids
+  security_group_id = module.security-group.security_group_id
   task_family       = var.task_family
   task_cpu          = var.task_cpu
   task_memory       = var.task_memory
@@ -59,25 +59,3 @@ module "ecr_repository" {
   source = "./modules/ecr"
   ecr_repository_name = var.ecr_repository_name
 }
-
-//module "eks" {
-//  source         = "./modules/eks"
-//  prefix         = var.prefix
-//  vpc_id         = module.new-vpc.vpc_id
-//  cluster_name   = var.cluster_name
-//  retention_days = var.retention_days
-//  subnet_ids     = module.new-vpc.subnet_ids
-//  desired_size   = var.desired_size
-//  max_size       = var.max_size
-//  min_size       = var.min_size
-//}
-//
-//module "cognito" {
-//  source = "./modules/cognito"
-//}
-//
-//module "api_gateway" {
-//  source      = "./modules/api_gateway"
-//  name        = "${var.prefix}-api-gateway"
-//  description = "API Gateway for ${var.prefix}"
-//}

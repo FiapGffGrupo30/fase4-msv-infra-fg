@@ -10,7 +10,3 @@ variable "task_cpu" {}
 variable "task_memory" {}
 variable "service_name" {}
 variable "ecr_repository_name" {}
-
-//variable "enable_default_action" {}
-//variable "vpc_id" {}
-//variable "subnets" {}
