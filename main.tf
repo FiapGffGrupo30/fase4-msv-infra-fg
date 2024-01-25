@@ -32,11 +32,6 @@ module "security-group" {
   vpc_id = module.new-vpc.vpc_id
 }
 
-module "target-group" {
-  source = "./modules/target_group"
-  vpc_id = module.new-vpc.vpc_id
-}
-
 module "load_balance" {
   source            = "./modules/load_balance"
   vpc_id            = module.new-vpc.vpc_id
