@@ -46,8 +46,8 @@ module "load_balance" {
 
 module "ecs_fargate" {
   source            = "./modules/ecs_fg"
-  subnets           = module.new-vpc.private_subnet_ids
-  security_group_id = module.security-group.security_group_id
+  subnets           = module.new-vpc.private_subnet_ids       #ID's das suas subnets PRIVADAS
+  security_group_id = module.security-group.security_group_id #ID do security group - não esquecer
   task_family       = var.task_family
   task_cpu          = var.task_cpu
   task_memory       = var.task_memory
@@ -56,6 +56,6 @@ module "ecs_fargate" {
 }
 
 module "ecr_repository" {
-  source = "./modules/ecr"
+  source              = "./modules/ecr"
   ecr_repository_name = var.ecr_repository_name
 }
