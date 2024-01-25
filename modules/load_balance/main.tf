@@ -1,15 +1,14 @@
 resource "aws_lb" "gff-alb" {
-  name               = "gff-alb"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [var.security_group_id]
-  subnets            = var.public_subnet_ids
+  name                       = "gff-alb"
+  internal                   = false
+  load_balancer_type         = "application"
+  security_groups            = [var.security_group_id]
+  subnets                    = var.public_subnet_ids
   enable_deletion_protection = false
 
-  enable_http2      = true
-  idle_timeout      = 400
+  enable_http2                     = true
+  idle_timeout                     = 400
   enable_cross_zone_load_balancing = true
-  //enable_logging = false
 }
 
 resource "aws_lb_listener" "gff-alb-listener" {
@@ -26,11 +25,6 @@ resource "aws_lb_listener" "gff-alb-listener" {
     }
   }
 }
-
-//resource "aws_lb_target_group_attachment" "gff-alb-tg-attachment" {
-//  target_group_arn = aws_lb_target_group.gff-alb-tg.arn
-//  target_id        = aws_instance.example.id
-//}
 
 resource "aws_lb_target_group" "gff-alb-tg" {
   name     = "gff-alb-tg"
