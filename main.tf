@@ -10,11 +10,11 @@ terraform {
   # esse trechode código.
   # OBS 2: Ao criar o S3 deixar abilitado o auto versionamento a
   # cada alteração.
-  //backend "s3" {
-  //  bucket = "bucket-cluster-gff"
-  //  key    = "terraform.tfstate"
-  //  region = "us-east-1"
-  //}
+  backend "s3" {
+    bucket = "bucket-cluster-gff"
+    key    = "terraform.tfstate"
+    region = "us-east-1"
+  }
 }
 
 provider "aws" {
