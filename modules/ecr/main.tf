@@ -1,3 +1,19 @@
-resource "aws_ecr_repository" "my_ecr_repo" {
-  name = var.ecr_repository_name
+resource "aws_ecr_repository" "repo-requests" {
+  name = var.ecr_repository_name_requests
+}
+
+resource "aws_ecr_repository" "repo-payments" {
+  name = var.ecr_repository_name_payments
+}
+
+resource "aws_ecr_repository" "repo-production" {
+  name = var.ecr_repository_name_production
+}
+
+resource "aws_ecr_repository" "repo-users" {
+  name = var.ecr_repository_name_users
+}
+
+resource "aws_ecr_repository" "repo-products" {
+  name = var.ecr_repository_name_products
 }

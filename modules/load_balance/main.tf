@@ -11,34 +11,46 @@ resource "aws_lb" "gff-alb" {
   enable_cross_zone_load_balancing = true
 }
 
-resource "aws_lb_listener" "gff-alb-listener" {
+resource "aws_lb_target_group" "gff-target-group" {
+  name        = "gff-target-group"
+  port        = 80
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = var.vpc_id
+
+  health_check {
+    path                = "/"
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    interval            = 30
+    timeout             = 10
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
+  }
+}
+
+resource "aws_lb_listener" "gff-listener" {
   load_balancer_arn = aws_lb.gff-alb.arn
   port              = 80
   protocol          = "HTTP"
 
   default_action {
-    type = "fixed-response"
-
-    fixed_response {
-      content_type = "text/plain"
-      status_code  = "200"
-    }
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.gff-target-group.arn
   }
 }
 
-resource "aws_lb_target_group" "gff-alb-tg" {
-  name     = "gff-alb-tg"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
+resource "aws_lb_listener_rule" "gff-listener-rule" {
+  listener_arn = aws_lb_listener.gff-listener.arn
 
-  health_check {
-    protocol            = "HTTP"
-    path                = "/healthcheck"
-    interval            = 30
-    timeout             = 10
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    matcher             = "200,204"
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.gff-target-group.arn
+  }
+
+  condition {
+    http_request_method {
+      values = ["GET", "HEAD", "POST", "PUT", "PATCH"]
+    }
   }
 }

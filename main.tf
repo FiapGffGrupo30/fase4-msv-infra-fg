@@ -11,7 +11,7 @@ terraform {
   # OBS 2: Ao criar o S3 deixar abilitado o auto versionamento a
   # cada alteração.
   backend "s3" {
-    bucket = "bucket-s3-gff"
+    bucket = "bucket-cluster-gff"
     key    = "terraform.tfstate"
     region = "us-east-1"
   }
@@ -37,20 +37,31 @@ module "load_balance" {
   vpc_id            = module.new-vpc.vpc_id
   security_group_id = module.security-group.security_group_id
   public_subnet_ids = module.new-vpc.public_subnet_ids
-}
-
-module "ecs_fargate" {
-  source            = "./modules/ecs_fg"
-  subnets           = module.new-vpc.private_subnet_ids       #ID's das suas subnets PRIVADAS
-  security_group_id = module.security-group.security_group_id #ID do security group - não esquecer
-  task_family       = var.task_family
-  task_cpu          = var.task_cpu
-  task_memory       = var.task_memory
-  cluster_name      = var.cluster_name
-  service_name      = var.service_name
+  prefix            = var.prefix
+  selected_subnets  = var.selected_subnets
 }
 
 module "ecr_repository" {
-  source              = "./modules/ecr"
-  ecr_repository_name = var.ecr_repository_name
+  source                         = "./modules/ecr"
+  ecr_repository_name_requests   = var.ecr_repository_name_requests
+  ecr_repository_name_payments   = var.ecr_repository_name_payments
+  ecr_repository_name_production = var.ecr_repository_name_production
+  ecr_repository_name_users      = var.ecr_repository_name_users
+  ecr_repository_name_products   = var.ecr_repository_name_products
+}
+
+module "ecs_fargate" {
+  source                 = "./modules/ecs_fg"
+  subnets                = module.new-vpc.public_subnet_ids
+  security_group_id      = module.security-group.security_group_id
+  task_family            = var.task_family
+  task_cpu               = var.task_cpu
+  task_memory            = var.task_memory
+  cluster_name           = var.cluster_name
+  service_name           = var.service_name
+  ecs_service_requests   = var.ecs_service_requests
+  ecs_service_payments   = var.ecs_service_payments
+  ecs_service_production = var.ecs_service_production
+  ecs_service_users      = var.ecs_service_users
+  ecs_service_products   = var.ecs_service_products
 }
