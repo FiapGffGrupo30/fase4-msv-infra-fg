@@ -11,7 +11,7 @@ terraform {
   # OBS 2: Ao criar o S3 deixar abilitado o auto versionamento a
   # cada alteração.
   backend "s3" {
-    bucket = "bucket-s3-gff"
+    bucket = "bucket-cluster-gff"
     key    = "terraform.tfstate"
     region = "us-east-1"
   }
@@ -31,6 +31,11 @@ module "security-group" {
   source = "./modules/security_group"
   vpc_id = module.new-vpc.vpc_id
 }
+
+//module "target-group" {
+//  source = "./modules/target_group"
+//  vpc_id = module.new-vpc.vpc_id
+//}
 
 module "load_balance" {
   source            = "./modules/load_balance"
@@ -65,3 +70,25 @@ module "ecs_fargate" {
   ecs_service_users      = var.ecs_service_users
   ecs_service_products   = var.ecs_service_products
 }
+
+//module "eks" {
+//  source         = "./modules/eks"
+//  prefix         = var.prefix
+//  vpc_id         = module.new-vpc.vpc_id
+//  cluster_name   = var.cluster_name
+//  retention_days = var.retention_days
+//  subnet_ids     = module.new-vpc.subnet_ids
+//  desired_size   = var.desired_size
+//  max_size       = var.max_size
+//  min_size       = var.min_size
+//}
+//
+//module "cognito" {
+//  source = "./modules/cognito"
+//}
+//
+//module "api_gateway" {
+//  source      = "./modules/api_gateway"
+//  name        = "${var.prefix}-api-gateway"
+//  description = "API Gateway for ${var.prefix}"
+//}
