@@ -50,27 +50,6 @@ resource "aws_ecs_task_definition" "ecs_task_definition-payments" {
   ])
 }
 
-resource "aws_ecs_task_definition" "ecs_task_definition-production" {
-  family                   = "${var.task_family}-producao"
-  network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE"]
-  cpu                      = var.task_cpu
-  memory                   = var.task_memory
-
-  container_definitions = jsonencode([
-    {
-      name  = "gff-task-producao",
-      image = "nome-da-imagem-do-container-producao:tag",
-      portMappings = [
-        {
-          containerPort = 8080,
-          hostPort      = 8080,
-        },
-      ],
-    },
-  ])
-}
-
 resource "aws_ecs_task_definition" "ecs_task_definition-users" {
   family                   = "${var.task_family}-usuarios"
   network_mode             = "awsvpc"
@@ -140,20 +119,6 @@ resource "aws_ecs_service" "ecs_service_payments" {
   }
 
   depends_on = [aws_ecs_task_definition.ecs_task_definition-payments]
-}
-
-resource "aws_ecs_service" "ecs_service_production" {
-  name            = var.ecs_service_production
-  cluster         = aws_ecs_cluster.ecs_cluster.id
-  task_definition = aws_ecs_task_definition.ecs_task_definition-production.arn
-  launch_type     = "FARGATE"
-
-  network_configuration {
-    subnets         = var.subnets
-    security_groups = [var.security_group_id]
-  }
-
-  depends_on = [aws_ecs_task_definition.ecs_task_definition-production]
 }
 
 resource "aws_ecs_service" "ecs_service_users" {

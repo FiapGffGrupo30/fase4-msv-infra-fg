@@ -11,7 +11,6 @@ variable "task_memory" {}
 variable "service_name" {}
 variable "ecr_repository_name_requests" {}
 variable "ecr_repository_name_payments" {}
-variable "ecr_repository_name_production" {}
 variable "ecr_repository_name_users" {}
 variable "ecr_repository_name_products" {}
 variable "selected_subnets" {
@@ -20,6 +19,5 @@ variable "selected_subnets" {
 }
 variable "ecs_service_requests" {}
 variable "ecs_service_payments" {}
-variable "ecs_service_production" {}
 variable "ecs_service_users" {}
 variable "ecs_service_products" {}

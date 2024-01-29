@@ -10,10 +10,6 @@ output "ecs_task_definition_payments_arn" {
   value = aws_ecs_task_definition.ecs_task_definition-payments.arn
 }
 
-output "ecs_task_definition_production_arn" {
-  value = aws_ecs_task_definition.ecs_task_definition-production.arn
-}
-
 output "ecs_task_definition_users_arn" {
   value = aws_ecs_task_definition.ecs_task_definition-users.arn
 }
@@ -28,10 +24,6 @@ output "ecs_service_name_requests" {
 
 output "ecs_service_name_payments" {
   value = aws_ecs_service.ecs_service_payments.name
-}
-
-output "ecs_service_name_production" {
-  value = aws_ecs_service.ecs_service_production.name
 }
 
 output "ecs_service_name_users" {
